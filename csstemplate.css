@@ -27,7 +27,7 @@
 }
 
 #board {
-  max-width: 490px;
+  max-width: 590px;
   min-width: 300px;
   margin: 0 auto;
   display: grid;
@@ -83,7 +83,7 @@
 }
 
 .tile-unclicked {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   border: 1px solid #000;
   background-color: #dee2e6;
@@ -105,7 +105,7 @@
 
 .tile-clicked {
   border: 1px solid #000;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #cccccc;
   height: 80px;
@@ -125,7 +125,7 @@
 }
 
 .green {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #afe237;
   border: 2px solid;
@@ -147,7 +147,7 @@
 }
 
 .yellow {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #ffd118;
   border: 2px solid;
@@ -169,7 +169,7 @@
 }
 
 .blue {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #aac5ff;
   border: 2px solid;
@@ -191,7 +191,7 @@
 }
 
 .violet {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #b56eb9;
   border: 2px solid;

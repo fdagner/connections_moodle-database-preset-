@@ -26,7 +26,11 @@
     "[[category4c]]",
     "[[category4d]]",
   ];
-  let category = ["[[Name1]]", "[[Name2]]", "[[Name3]]", "[[Name4]]"];
+  let category = [
+    "[[Name1]]",
+    "[[Name2]]",
+    "[[Name3]]",
+    "[[Name4]]"];
   let terms = violetCategory.concat(
     blueCategory,
     greenCategory,
@@ -148,15 +152,10 @@
 
   // Handles tile selections
   function handleTileClick() {
-    if (
-      this.classList.contains("violet") ||
-      this.classList.contains("blue") ||
-      this.classList.contains("green") ||
-      this.classList.contains("yellow")
-    ) {
-      // If the tile belongs to a colored category, return without doing anything
-      return;
-    }
+  if (this.classList.contains("violet") || this.classList.contains("blue") || this.classList.contains("green") || this.classList.contains("yellow")) {
+    // If the tile belongs to a colored category, return without doing anything
+    return;
+  }
 
     if (this.classList.contains("tile-clicked")) {
       // If the tile is already clicked, deselect it
@@ -174,20 +173,24 @@
   // User submit
   function checkSolution() {
     if (mistakesRemaining == 0) return;
+ // Entferne Leerzeichen aus den Kategorienamen vor der Überprüfung
+    const clickedOnNoSpaces = clickedOn.map(term => term.replace(/\s/g, ''));
+
     document
       .getElementById("submit")
       .classList.replace("button-clicked", "btn-secondary");
 
     if (clickedOn.length > scale || clickedOn.length < scale) return;
-    for (let i = 0; i < allCategorys.length; i++) {
-      let currCategory = allCategorys[i];
-      let correct = true;
+   for (let i = 0; i < allCategorys.length; i++) {
+        let currCategory = allCategorys[i];
+        let correct = true;
 
-      for (let w = 0; w < currCategory.length; w++) {
-        if (!clickedOn.includes(currCategory[w])) {
-          correct = false;
+        for (let w = 0; w < currCategory.length; w++) {
+            // Überprüfung ohne Leerzeichen
+            if (!clickedOnNoSpaces.includes(currCategory[w].replace(/\s/g, ''))) {
+                correct = false;
+            }
         }
-      }
       let colorList = ["violet", "green", "blue", "yellow"];
       if (correct) {
         if (correct) {
@@ -234,7 +237,7 @@
       hearts += "<i class='fa-solid fa-heart'></i> ";
     }
     mistakes.innerHTML = hearts;
-    document.getElementById("mistakes-div").appendChild(mistakes);
+    document.getElementById("mistakes-container").appendChild(mistakes);
 
     if (mistakesRemaining == 0) {
       document.getElementById("result").innerText = "Leider verloren ☹️";
@@ -244,8 +247,8 @@
 <div id="connections">
   <h1 id="headline" style="text-align: center">Bilde Vierergruppen!</h1>
   <div id="board"></div>
-  <br />
-  <hr />
+  <br>
+  <hr>
   <h2 id="groups" style="text-align: center">Gefundene Gruppen</h2>
   <div id="category">
     <div id="nogroup">-</div>
