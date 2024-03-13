@@ -173,7 +173,7 @@
   // User submit
   function checkSolution() {
     if (mistakesRemaining == 0) return;
- // Entferne Leerzeichen aus den Kategorienamen vor der Überprüfung
+   // Remove spaces from category names before checking
     const clickedOnNoSpaces = clickedOn.map(term => term.replace(/\s/g, ''));
 
     document
@@ -186,7 +186,7 @@
         let correct = true;
 
         for (let w = 0; w < currCategory.length; w++) {
-            // Überprüfung ohne Leerzeichen
+      // Check without spaces
             if (!clickedOnNoSpaces.includes(currCategory[w].replace(/\s/g, ''))) {
                 correct = false;
             }

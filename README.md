@@ -7,7 +7,7 @@ Group words by topic.
 
 ## Getting started
 
-Download the [release file](https://github.com/fdagner/connections_moodle-database-preset/releases). 
+Download the [release file](https://github.com/fdagner/connections_moodle-database-preset-/releases/). 
 Create a "Database" activity in Moodle and then upload the ZIP file.
 
 Important: Switch off the filters for linking to activities and glossaries in the database settings.
