@@ -1,0 +1,257 @@
+<script>
+  // Constants
+  const scale = 4;
+  // Variables
+  let violetCategory = [
+    "[[category1]]",
+    "[[category1b]]",
+    "[[category1c]]",
+    "[[category1d]]",
+  ];
+  let blueCategory = [
+    "[[category2]]",
+    "[[category2b]]",
+    "[[category2c]]",
+    "[[category2d]]",
+  ];
+  let greenCategory = [
+    "[[category3]]",
+    "[[category3b]]",
+    "[[category3c]]",
+    "[[category3d]]",
+  ];
+  let yellowCategory = [
+    "[[category4]]",
+    "[[category4b]]",
+    "[[category4c]]",
+    "[[category4d]]",
+  ];
+  let category = ["[[Name1]]", "[[Name2]]", "[[Name3]]", "[[Name4]]"];
+  let terms = violetCategory.concat(
+    blueCategory,
+    greenCategory,
+    yellowCategory
+  );
+  let height = scale;
+  let width = scale;
+  let allCategorys = [
+    violetCategory,
+    blueCategory,
+    greenCategory,
+    yellowCategory,
+  ];
+  let clickedOn = [];
+  let correctOn = 0;
+  let mistakesRemaining = 4;
+  let allTiles = [];
+
+  // Starts the game
+  window.onload = function () {
+    initialize();
+  };
+
+  // Initializes the game
+  function initialize() {
+    createBoard();
+  }
+
+  // Creates the game board
+  function createBoard() {
+    for (let r = 0; r < height; r++) {
+      for (let c = 0; c < width; c++) {
+        let tile = document.createElement("span");
+        tile.id = terms[r * scale + c];
+        tile.classList.add("tile-unclicked");
+        tile.innerText = terms[r * scale + c];
+        document.getElementById("board").appendChild(tile);
+        allTiles.push(tile);
+        tile.addEventListener("click", handleTileClick);
+      }
+    }
+    shuffle();
+
+    function addButton(id, text, clickHandler) {
+      let button = document.createElement("span");
+      button.id = id;
+      button.classList.add("btn-secondary", "btn");
+      button.innerText = text;
+      document.getElementById("buttons").appendChild(button);
+      button.addEventListener("click", clickHandler);
+    }
+
+    // Adds the "shuffle" button
+    addButton("shuffle", "Mischen", shuffle);
+
+    // Adds the "de-select" button
+    addButton("deselect", "Alles Abwählen", deselect);
+
+    // Adds the "submit" button
+    addButton("submit", "Absenden", checkSolution);
+
+    // Adds the "mistakes" display
+    let mistakes = document.createElement("span");
+    mistakes.id = "mistakes";
+    mistakes.classList.add("mistakes");
+    // Replace the number with hearts
+    let hearts = "";
+    for (let i = 0; i < mistakesRemaining; i++) {
+      hearts += "<i class='fa-solid fa-heart'></i> ";
+    }
+    mistakes.innerHTML = hearts;
+    document.getElementById("mistakes-container").appendChild(mistakes);
+  }
+
+  // Deselects all selected tiles
+  function deselect() {
+    // Deselect all selected tiles
+    clickedOn.forEach((tileId) => {
+      const tileElement = document.getElementById(tileId);
+      if (tileElement) {
+        tileElement.classList.replace("tile-clicked", "tile-unclicked");
+      }
+    });
+
+    // Clear the clickedOn array
+    clickedOn = [];
+  }
+
+  // Rearranges all tiles on the board
+  function shuffle() {
+    // Copy of allTiles array
+    let allTilesDuplicate = [...allTiles];
+    let currentIndex = allTilesDuplicate.length;
+    let temporaryValue, randomIndex;
+
+    // There are still elements that need to be reshuffled...
+    while (currentIndex !== 0) {
+      // Select a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // Exchange it with the current element.
+      temporaryValue = allTilesDuplicate[currentIndex];
+      allTilesDuplicate[currentIndex] = allTilesDuplicate[randomIndex];
+      allTilesDuplicate[randomIndex] = temporaryValue;
+    }
+
+    // Update the board with mixed tiles
+    const board = document.getElementById("board");
+    board.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    allTilesDuplicate.forEach((tile) => fragment.appendChild(tile));
+    board.appendChild(fragment);
+
+    // Update array
+    allTiles = allTilesDuplicate;
+  }
+
+  // Handles tile selections
+  function handleTileClick() {
+    if (
+      this.classList.contains("violet") ||
+      this.classList.contains("blue") ||
+      this.classList.contains("green") ||
+      this.classList.contains("yellow")
+    ) {
+      // If the tile belongs to a colored category, return without doing anything
+      return;
+    }
+
+    if (this.classList.contains("tile-clicked")) {
+      // If the tile is already clicked, deselect it
+      const tileIndex = clickedOn.indexOf(this.innerText);
+      if (tileIndex !== -1) {
+        clickedOn.splice(tileIndex, 1);
+      }
+      this.classList.replace("tile-clicked", "tile-unclicked");
+    } else if (clickedOn.length < width) {
+      // If the maximum number of tiles is not reached, select the tile
+      clickedOn.push(this.innerText);
+      this.classList.replace("tile-unclicked", "tile-clicked");
+    }
+  }
+  // User submit
+  function checkSolution() {
+    if (mistakesRemaining == 0) return;
+    document
+      .getElementById("submit")
+      .classList.replace("button-clicked", "btn-secondary");
+
+    if (clickedOn.length > scale || clickedOn.length < scale) return;
+    for (let i = 0; i < allCategorys.length; i++) {
+      let currCategory = allCategorys[i];
+      let correct = true;
+
+      for (let w = 0; w < currCategory.length; w++) {
+        if (!clickedOn.includes(currCategory[w])) {
+          correct = false;
+        }
+      }
+      let colorList = ["violet", "green", "blue", "yellow"];
+      if (correct) {
+        if (correct) {
+          const categoryName = document.getElementById("category");
+          for (let l = 0; l < clickedOn.length; l++) {
+            let tile = document.getElementById(clickedOn[l]);
+            tile.classList.replace("tile-clicked", colorList[i]);
+            const categoryCount = document.getElementById("nogroup");
+            categoryCount.textContent = "";
+          }
+          categoryName.innerHTML +=
+            "<div class='correct " +
+            colorList[i] +
+            "'>" +
+            category[i] +
+            "</div><br>";
+        }
+        clickedOn = [];
+        correctOn++;
+
+        if (correctOn == height) {
+          document.getElementById("result").innerHTML =
+            "<div>Du bist genial!</div>";
+        }
+
+        return;
+      } else {
+        if (i + 1 == allCategorys.length) {
+          //  None of the groups match the clicked tiles
+          for (let l = 0; l < clickedOn.length; l++) {
+            let tile = document.getElementById(clickedOn[l]);
+            tile.classList.replace("tile-clicked", "tile-unclicked");
+          }
+
+          clickedOn = [];
+        }
+      }
+    }
+
+    // Updates mistakes
+    mistakesRemaining--;
+    let hearts = "";
+    for (let i = 0; i < mistakesRemaining; i++) {
+      hearts += "<i class='fa-solid fa-heart'></i> ";
+    }
+    mistakes.innerHTML = hearts;
+    document.getElementById("mistakes-div").appendChild(mistakes);
+
+    if (mistakesRemaining == 0) {
+      document.getElementById("result").innerText = "Leider verloren ☹️";
+    }
+  }
+</script>
+<div id="connections">
+  <h1 id="headline" style="text-align: center">Bilde Vierergruppen!</h1>
+  <div id="board"></div>
+  <br />
+  <hr />
+  <h2 id="groups" style="text-align: center">Gefundene Gruppen</h2>
+  <div id="category">
+    <div id="nogroup">-</div>
+  </div>
+  <h2 id="lives" style="text-align: center">Leben</h2>
+  <div id="mistakes-container"></div>
+  <div id="result" style="text-align: center"></div>
+  <div id="buttons"></div>
+</div>
