@@ -10,6 +10,8 @@ Group words by topic.
 Download the [release file](https://github.com/fdagner/connections_moodle-database-preset/releases). 
 Create a "Database" activity in Moodle and then upload the ZIP file.
 
+Important: Switch off the filters for linking to activities and glossaries in the database settings.
+
 ## Add topics and terms
 
 With "Add entry" you can enter 4 topics and 4 terms each
